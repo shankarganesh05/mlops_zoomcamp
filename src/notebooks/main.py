@@ -77,7 +77,7 @@ def objective(params):
         booster = xgb.train(
             params=params,
             dtrain=train,
-            num_boost_round=1000,
+            num_boost_round=200,
             evals=[(valid, 'validation')],
             early_stopping_rounds=50
         )
