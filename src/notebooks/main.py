@@ -77,12 +77,12 @@ def objective(params):
         booster = xgb.train(
             params=params,
             dtrain=train,
-            num_boost_round=1000,
+            num_boost_round=1,
             evals=[(valid, 'validation')],
-            early_stopping_rounds=50
+            early_stopping_rounds=1
         )
         y_pred = booster.predict(valid)
-        rmse = root_mean_squared_error(y_val, y_pred, squared=False)
+        rmse = root_mean_squared_error(y_val, y_pred)
         mlflow.log_metric("rmse", rmse)
 
     return {'loss': rmse, 'status': STATUS_OK}
@@ -101,7 +101,7 @@ best_result = fmin(
     fn=objective,
     space=search_space,
     algo=tpe.suggest,
-    max_evals=50,
+    max_evals=1,
     trials=Trials()
 )
 print("Best hyperparameters found:", best_result)
